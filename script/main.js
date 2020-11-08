@@ -26,25 +26,28 @@ window.addEventListener('DOMContentLoaded', () => {
 
         };
 
-        function updateClock() {
+        const updateClock = () => {
 
             const timer = getTimeRemaining();
 
-            timerHours.textContent = `${addZero(timer.hours)}`;
-            timerMinutes.textContent = `${addZero(timer.minutes)}`;
-            timerSeconds.textContent = `${addZero(timer.seconds)}`;
+            const trueClock = (timeValue, timeSelector) => (timeValue <= 0 ?
+                timeSelector.textContent = '00' :
+                timeSelector.textContent = addZero(timeValue));
 
-            if (timer.timeRemaining > 0) {
-                setInterval(updateClock, 1000);
-            } else {
-                timerHours.textContent = '00';
-                timerMinutes.textContent = '00';
-                timerSeconds.textContent = '00';
+            trueClock(timer.hours, timerHours);
+            trueClock(timer.minutes, timerMinutes);
+            trueClock(timer.seconds, timerSeconds);
+
+
+            if (timer.timeRemaining <= 0) {
+                // eslint-disable-next-line no-use-before-define
+                clearInterval(timeInterval);
             }
 
-        }
+        };
         updateClock();
+        const timeInterval = setInterval(updateClock, 1000);
     };
 
-    setInterval(countTimer, 1000, '10 november 2020');
+    countTimer('10 november 2020');
 });
