@@ -1,15 +1,16 @@
 window.addEventListener('DOMContentLoaded', () => {
+    // eslint-disable-next-line strict
     'use strict';
 
     // Таймер
-    function countTimer(deadline) {
+    const countTimer = deadline => {
         const timerHours = document.querySelector('#timer-hours'),
             timerMinutes = document.querySelector('#timer-minutes'),
             timerSeconds = document.querySelector('#timer-seconds');
 
         const addZero = n => (n < 10 ? "0" + n : n);
 
-        function getTimeRemaining() {
+        const getTimeRemaining = () => {
 
             const dateStop = new Date(deadline).getTime(),
                 dateNew = new Date().getTime(),
@@ -23,7 +24,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             return { timeRemaining, hours, minutes, seconds };
 
-        }
+        };
 
         function updateClock() {
 
@@ -43,7 +44,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         }
         updateClock();
-    }
+    };
 
     setInterval(countTimer, 1000, '10 november 2020');
 });
