@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 window.addEventListener('DOMContentLoaded', () => {
     // eslint-disable-next-line strict
     'use strict';
@@ -18,33 +19,75 @@ window.addEventListener('DOMContentLoaded', () => {
                 seconds = Math.floor(timeRemaining % 60),
                 minutes = Math.floor((timeRemaining / 60) % 60),
                 hours = Math.floor(timeRemaining / 60 / 60);
-                // Для отображения дней нужно - hours = Math.floor() % 24;
-                // Потом прописать:
-                // days = Math.floor(timeRemaining / 60 / 60 / 24);
 
             return { timeRemaining, hours, minutes, seconds };
 
         };
 
-        function updateClock() {
+        const updateClock = () => {
 
             const timer = getTimeRemaining();
 
-            timerHours.textContent = `${addZero(timer.hours)}`;
-            timerMinutes.textContent = `${addZero(timer.minutes)}`;
-            timerSeconds.textContent = `${addZero(timer.seconds)}`;
+            const trueClock = (timeValue, timeSelector) => (timeValue <= 0 ?
+                timeSelector.textContent = '00' :
+                timeSelector.textContent = addZero(timeValue));
 
-            if (timer.timeRemaining > 0) {
-                setInterval(updateClock, 1000);
-            } else {
-                timerHours.textContent = '00';
-                timerMinutes.textContent = '00';
-                timerSeconds.textContent = '00';
+            trueClock(timer.hours, timerHours);
+            trueClock(timer.minutes, timerMinutes);
+            trueClock(timer.seconds, timerSeconds);
+
+
+            if (timer.timeRemaining <= 0) {
+                clearInterval(timeInterval);
+
             }
 
-        }
+        };
         updateClock();
-    };
+        // !!!!!!!!!!!!!!!
+        const timeInterval = setInterval(updateClock, 1000);
 
-    setInterval(countTimer, 1000, '10 november 2020');
+    };
+    countTimer('10 november 2020');
+
+    // Меню
+    const toggleMenu = () => {
+
+        const btnMenu = document.querySelector('.menu'),
+            menu = document.querySelector('menu'),
+            menuItems = menu.querySelectorAll('ul>li'),
+            closeBtn = document.querySelector('.close-btn');
+        // Открытие/закрытие меню с помощью добавления класса
+        const handlerMenu = () => {
+            menu.classList.toggle('active-menu');
+        };
+        // по мени
+        btnMenu.addEventListener('click', handlerMenu);
+        // по крестику
+        closeBtn.addEventListener('click', handlerMenu);
+        //при переходе в определенный блок
+        menuItems.forEach(elem => elem.addEventListener('click', handlerMenu));
+
+    };
+    toggleMenu();
+
+    // Модальное окно
+    const togglePopup = () => {
+
+        const popup = document.querySelector('.popup'),
+            popupBtn = document.querySelectorAll('.popup-btn'),
+            popupClose = document.querySelector('.popup-close');
+
+        popupBtn.forEach(elem => {
+            elem.addEventListener('click', () => {
+                popup.style.display = 'block';
+            });
+        });
+
+        popupClose.addEventListener('click', () => {
+            popup.style.display = 'none';
+        });
+
+    };
+    togglePopup();
 });
