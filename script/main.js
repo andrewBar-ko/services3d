@@ -173,7 +173,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     }
                 });
             }
-            
+
         });
     };
     tabs();
