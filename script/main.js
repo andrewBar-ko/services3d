@@ -8,6 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const timerHours = document.querySelector('#timer-hours'),
             timerMinutes = document.querySelector('#timer-minutes'),
             timerSeconds = document.querySelector('#timer-seconds');
+        let timeInterval = 0;
 
         const addZero = n => (n < 10 ? "0" + n : n);
 
@@ -38,17 +39,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
             if (timer.timeRemaining <= 0) {
-                clearInterval(timeInterval);
-
+                clearInterval(this.timeInterval);
             }
 
         };
         updateClock();
-        // !!!!!!!!!!!!!!!
-        const timeInterval = setInterval(updateClock, 1000);
+        // eslint-disable-next-line no-unused-vars
+        timeInterval = setInterval(updateClock, 1000);
 
     };
-    countTimer('10 november 2020');
+    countTimer('09 november 2020');
 
     // Меню
     const toggleMenu = () => {
@@ -72,22 +72,70 @@ window.addEventListener('DOMContentLoaded', () => {
     toggleMenu();
 
     // Модальное окно
-    const togglePopup = () => {
-
+    const togglePopUp = () => {
         const popup = document.querySelector('.popup'),
             popupBtn = document.querySelectorAll('.popup-btn'),
-            popupClose = document.querySelector('.popup-close');
+            popupClose = document.querySelector('.popup-close'),
+            popupContent = document.querySelector('.popup-content'),
+            popupData = {
+                count: -445,
+                speed: 15,
+                startPos: -445,
+                endPos: 0
+            };
+
+        const showPopup = () => {
+
+            if (popupData.startPos > popupData.endPos) {
+                popupData.count -= popupData.speed;
+            } else {
+                popupData.count += popupData.speed;
+            }
+
+            popupContent.style.transform = `translateY(${popupData.count}px)`;
+
+            if (popupData.startPos > popupData.endPos ?
+                popupData.count > popupData.endPos :
+                popupData.count < popupData.endPos) {
+                requestAnimationFrame(showPopup);
+            }
+        };
 
         popupBtn.forEach(elem => {
+
             elem.addEventListener('click', () => {
                 popup.style.display = 'block';
+                if (screen.width > 768) {
+                    popupData.count = popupData.startPos;
+                    requestAnimationFrame(showPopup);
+                }
             });
+
         });
 
         popupClose.addEventListener('click', () => {
             popup.style.display = 'none';
         });
-
     };
-    togglePopup();
+
+    togglePopUp();
+
+    // Скролл при click на href = '#';
+    const smoothLinks = document.querySelectorAll('a[href^="#"]');
+
+    for (const smoothLink of smoothLinks) {
+
+        smoothLink.addEventListener('click', e => {
+
+            e.preventDefault();
+
+            const id = smoothLink.getAttribute('href');
+            document.querySelector(id).scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+
+        });
+    }
+
 });
