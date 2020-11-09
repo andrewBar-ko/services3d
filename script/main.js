@@ -7,6 +7,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const timerHours = document.querySelector('#timer-hours'),
             timerMinutes = document.querySelector('#timer-minutes'),
             timerSeconds = document.querySelector('#timer-seconds');
+        let timeInterval = 0;
 
         const addZero = n => (n < 10 ? "0" + n : n);
 
@@ -46,7 +47,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
         };
         updateClock();
-        const timeInterval = setInterval(updateClock, 1000);
+        // eslint-disable-next-line no-unused-vars
+        timeInterval = setInterval(updateClock, 1000);
     };
 
     countTimer('10 november 2020');
