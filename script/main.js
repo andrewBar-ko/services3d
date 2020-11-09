@@ -53,21 +53,24 @@ window.addEventListener('DOMContentLoaded', () => {
     // Меню
     const toggleMenu = () => {
 
-        const btnMenu = document.querySelector('.menu'),
-            menu = document.querySelector('menu'),
-            menuItems = menu.querySelectorAll('ul>li'),
-            closeBtn = document.querySelector('.close-btn');
-        // Открытие/закрытие меню с помощью добавления класса
         const handlerMenu = () => {
-            menu.classList.toggle('active-menu');
-        };
-        // по мени
-        btnMenu.addEventListener('click', handlerMenu);
-        // по крестику
-        closeBtn.addEventListener('click', handlerMenu);
-        //при переходе в определенный блок
-        menuItems.forEach(elem => elem.addEventListener('click', handlerMenu));
 
+            const target = event.target;
+
+            const displayMenu = () => {
+                document.querySelector('menu').classList.toggle('active-menu');
+            };
+
+            if (target.closest('.menu') ||
+				(!target.closest('menu') &&
+					document.querySelector('menu').classList.contains('active-menu'))) {
+                displayMenu();
+            } else if (target.closest('menu') && target.closest('[href^="#"]')) {
+                displayMenu();
+            }
+        };
+
+        document.body.addEventListener('click', handlerMenu);
     };
     toggleMenu();
 
@@ -138,4 +141,123 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Tabs
+    const tabs = () => {
+
+        const tabHeader = document.querySelector('.service-header'),
+            tab = tabHeader.querySelectorAll('.service-header-tab'),
+            tabContent = document.querySelectorAll('.service-tab');
+
+        const toggleTabContent = index => {
+
+            for (let i = 0; i < tabContent.length; i++) {
+                if (index === i) {
+                    tab[i].classList.add('active');
+                    tabContent[i].classList.remove('d-none');
+                } else {
+                    tab[i].classList.remove('active');
+                    tabContent[i].classList.add('d-none');
+                }
+            }
+
+        };
+
+        tabHeader.addEventListener('click', event => {
+
+            let target = event.target;
+            target = target.closest('.service-header-tab');
+            if (target) {
+                tab.forEach((item, i) => {
+                    if (item === target) {
+                        toggleTabContent(i);
+                    }
+                });
+            }
+            
+        });
+    };
+    tabs();
+
+    // Slider id = portfolio
+    const slider = () => {
+
+        const slide = document.querySelectorAll('.portfolio-item'),
+            dot = document.querySelectorAll('.dot'),
+            slider = document.querySelector('.portfolio-content');
+
+        let currentSlide = 0,
+            interval;
+
+        const prevSlide = (elem, index, strClass) => {
+            elem[index].classList.remove(strClass);
+        };
+
+        const nextSlide = (elem, index, strClass) => {
+            elem[index].classList.add(strClass);
+        };
+
+        const autoPlaySlide = () => {
+            prevSlide(slide, currentSlide, 'portfolio-item-active');
+            prevSlide(dot, currentSlide, 'dot-active');
+            currentSlide = currentSlide < slide.length - 1 ? currentSlide + 1 : 0;
+            nextSlide(slide, currentSlide, 'portfolio-item-active');
+            nextSlide(dot, currentSlide, 'dot-active');
+        };
+
+        const startSlide = (time = 2000) => {
+            interval = setInterval(autoPlaySlide, time);
+        };
+
+        const stopSlide = () => {
+            clearInterval(interval);
+        };
+
+        slider.addEventListener('click', event => {
+            event.preventDefault();
+
+            const target = event.target;
+
+            if (target.matches('.portfolio-btn, .dot')) {
+                prevSlide(slide, currentSlide, 'portfolio-item-active');
+                prevSlide(dot, currentSlide, 'dot-active');
+
+                if (target.matches('#arrow-right')) {
+                    currentSlide++;
+                } else if (target.matches('#arrow-left')) {
+                    currentSlide--;
+                } else if (target.matches('.dot')) {
+                    dot.forEach((elem, index) => {
+                        if (elem === target) {
+                            currentSlide = index;
+                        }
+                    });
+                }
+
+                if (currentSlide >= slide.length) {
+                    currentSlide = 0;
+                }
+                if (currentSlide < 0) {
+                    currentSlide = slide.length - 1;
+                }
+
+                nextSlide(slide, currentSlide, 'portfolio-item-active');
+                nextSlide(dot, currentSlide, 'dot-active');
+            }
+        });
+
+        slider.addEventListener('mouseover', event => {
+            if (event.target.matches('.portfolio-btn') || event.target.matches('.dot')) {
+                stopSlide();
+            }
+        });
+
+        slider.addEventListener('mouseout', event => {
+            if (event.target.matches('.portfolio-btn') || event.target.matches('.dot')) {
+                startSlide();
+            }
+        });
+
+        startSlide();
+    };
+    slider();
 });
