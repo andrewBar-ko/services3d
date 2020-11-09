@@ -178,6 +178,23 @@ window.addEventListener('DOMContentLoaded', () => {
     };
     tabs();
 
+    // Add dot
+    const addDot = () => {
+
+        const portfolioItem = document.querySelectorAll('.portfolio-item'),
+            portfolioDots = document.querySelector('.portfolio-dots');
+
+        portfolioItem.forEach(() => {
+            const dot = document.createElement('li');
+            dot.classList.add('dot');
+            portfolioDots.appendChild(dot);
+        });
+
+        portfolioDots.children[0].classList.add('dot-active');
+
+    };
+    addDot();
+
     // Slider id = portfolio
     const slider = () => {
 
@@ -260,4 +277,5 @@ window.addEventListener('DOMContentLoaded', () => {
         startSlide();
     };
     slider();
+
 });
