@@ -48,7 +48,7 @@ window.addEventListener('DOMContentLoaded', () => {
         timeInterval = setInterval(updateClock, 1000);
 
     };
-    countTimer('09 november 2020');
+    countTimer('31 november 2020');
 
     // Меню
     const toggleMenu = () => {
@@ -120,22 +120,23 @@ window.addEventListener('DOMContentLoaded', () => {
 
     togglePopUp();
 
-    // Скролл при click на href = '#';
-    const smoothLinks = document.querySelectorAll('a[href^="#"]');
+    // // Скролл при click на href = '#';
+    // const smoothLinks = document.querySelectorAll('a[href^="#"]');
 
-    for (const smoothLink of smoothLinks) {
+    // for (const smoothLink of smoothLinks) {
 
-        smoothLink.addEventListener('click', e => {
+    //     smoothLink.addEventListener('click', e => {
 
-            e.preventDefault();
+    //         e.preventDefault();
 
-            const id = smoothLink.getAttribute('href');
-            document.querySelector(id).scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
+    //         const id = smoothLink.getAttribute('href');
 
-        });
-    }
+    //         document.querySelector(id).scrollIntoView({
+    //             behavior: 'smooth',
+    //             block: 'start'
+    //         });
+
+    //     });
+    // }
 
 });
