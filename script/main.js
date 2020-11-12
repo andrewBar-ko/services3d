@@ -298,18 +298,76 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     // Сalculator
-    const enterOnlyNumbers = () => {
-        const calcBlock = document.querySelector('.calc-block');
+    const calc = (price = 100) => {
+        const calcBlock = document.querySelector('.calc-block'),
+            calcType = document.querySelector('.calc-type'),
+            calcSquare = document.querySelector('.calc-square'),
+            calcDay = document.querySelector('.calc-day'),
+            calcCount = document.querySelector('.calc-count'),
+            totalValue = document.getElementById('total');
 
-        calcBlock.addEventListener('input', e => {
+        const countSum = () => {
+            let total = 0,
+                countValue = 1,
+                dayValue = 10,
+                step = 10;
+            const typeValue = calcType.options[calcType.selectedIndex].value,
+                squareValue = +calcSquare.value;
 
-            if (e.target.matches('.calc-square') ||
-            e.target.matches('.calc-count') ||
-            e.target.matches('.calc-day')) {
 
-                e.target.value = e.target.value.replace(/\D/g, '');
+            if (calcCount.value > 1) {
+                countValue += (calcCount.value - 1) / 10;
+            }
+
+            if (calcDay.value && calcDay.value < 5) {
+                dayValue *= 2;
+            }
+            if (calcDay.value && calcDay.value < 10) {
+                dayValue *= 1.5;
+            }
+
+            if (!!typeValue && !!squareValue) {
+                total = price * typeValue * squareValue * countValue * dayValue;
+            }
+
+            if (totalValue.textContent !== total) {
+                if (totalValue.textContent > total) {
+                    step = -1;
+                }
+
+                const timer = setInterval(() => {
+                    totalValue.textContent = +totalValue.textContent + step;
+                    if ((total - totalValue.textContent) * step < 1) {
+                        clearInterval(timer);
+                        totalValue.textContent = Math.round(total);
+                    }
+                }, 0);
+            }
+        };
+
+        calcBlock.addEventListener('change', e => {
+            const target = e.target;
+
+            if (target.matches('select') ||
+            target.matches('input')) {
+                countSum();
             }
         });
+        // Enter Only Numbers!
+        const enterOnlyNumbers = () => {
+
+            calcBlock.addEventListener('input', e => {
+
+                if (e.target.matches('.calc-square') ||
+                e.target.matches('.calc-count') ||
+                e.target.matches('.calc-day')) {
+
+                    e.target.value = e.target.value.replace(/\D/g, '');
+                }
+            });
+        };
+        enterOnlyNumbers();
+
     };
 
     countTimer('09 november 2020');
@@ -318,7 +376,7 @@ window.addEventListener('DOMContentLoaded', () => {
     tabs();
     addDot();
     setCommandImg();
-    enterOnlyNumbers();
+    calc(100);
     slider();
 
 });
