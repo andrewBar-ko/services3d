@@ -297,6 +297,21 @@ window.addEventListener('DOMContentLoaded', () => {
 
     };
 
+    // Сalculator
+    const enterOnlyNumbers = () => {
+        const calcBlock = document.querySelector('.calc-block');
+
+        calcBlock.addEventListener('input', e => {
+
+            if (e.target.matches('.calc-square') ||
+            e.target.matches('.calc-count') ||
+            e.target.matches('.calc-day')) {
+
+                e.target.value = e.target.value.replace(/\D/g, '');
+            }
+        });
+    };
+
 
     countTimer('09 november 2020');
     toggleMenu();
@@ -304,6 +319,7 @@ window.addEventListener('DOMContentLoaded', () => {
     tabs();
     addDot();
     setCommandImg();
+    enterOnlyNumbers();
     slider();
 
 });
