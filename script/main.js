@@ -105,7 +105,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             elem.addEventListener('click', () => {
                 popup.style.display = 'block';
-                if (screen.width > 768) {
+                if (window.innerWidth > 768) {
                     popupData.count = popupData.startPos;
                     requestAnimationFrame(showPopup);
                 }
