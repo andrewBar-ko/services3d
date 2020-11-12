@@ -312,7 +312,6 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-
     countTimer('09 november 2020');
     toggleMenu();
     togglePopUp();
