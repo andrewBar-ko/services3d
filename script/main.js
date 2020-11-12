@@ -48,7 +48,6 @@ window.addEventListener('DOMContentLoaded', () => {
         timeInterval = setInterval(updateClock, 1000);
 
     };
-    countTimer('09 november 2020');
 
     // Меню
     const toggleMenu = () => {
@@ -65,14 +64,15 @@ window.addEventListener('DOMContentLoaded', () => {
 				(!target.closest('menu') &&
 					document.querySelector('menu').classList.contains('active-menu'))) {
                 displayMenu();
-            } else if (target.closest('menu') && target.closest('[href^="#"]')) {
+            }
+
+            if (target.closest('menu') && target.closest('[href^="#"]')) {
                 displayMenu();
             }
         };
 
         document.body.addEventListener('click', handlerMenu);
     };
-    toggleMenu();
 
     // Модальное окно
     const togglePopUp = () => {
@@ -108,7 +108,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             elem.addEventListener('click', () => {
                 popup.style.display = 'block';
-                if (screen.width > 768) {
+                if (window.innerWidth > 768) {
                     popupData.count = popupData.startPos;
                     requestAnimationFrame(showPopup);
                 }
@@ -120,8 +120,6 @@ window.addEventListener('DOMContentLoaded', () => {
             popup.style.display = 'none';
         });
     };
-
-    togglePopUp();
 
     // // Скролл при click на href = '#';
     // const smoothLinks = document.querySelectorAll('a[href^="#"]');
@@ -176,7 +174,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
         });
     };
-    tabs();
 
     // Add dot
     const addDot = () => {
@@ -193,7 +190,6 @@ window.addEventListener('DOMContentLoaded', () => {
         portfolioDots.children[0].classList.add('dot-active');
 
     };
-    addDot();
 
     // Slider id = portfolio
     const slider = () => {
@@ -276,6 +272,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
         startSlide();
     };
+
+    countTimer('09 november 2020');
+    toggleMenu();
+    togglePopUp();
+    tabs();
+    addDot();
     slider();
 
 });
