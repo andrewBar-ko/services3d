@@ -310,7 +310,7 @@ window.addEventListener('DOMContentLoaded', () => {
             let total = 0,
                 countValue = 1,
                 dayValue = 10,
-                step = 70;
+                step = 10000;
             const typeValue = calcType.options[calcType.selectedIndex].value,
                 squareValue = +calcSquare.value;
 
@@ -332,7 +332,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             if (totalValue.textContent !== total) {
                 if (totalValue.textContent > total) {
-                    step = -50;
+                    step = -8000;
                 }
 
                 const timer = setInterval(() => {
