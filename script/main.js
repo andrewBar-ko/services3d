@@ -310,7 +310,7 @@ window.addEventListener('DOMContentLoaded', () => {
             let total = 0,
                 countValue = 1,
                 dayValue = 10,
-                step = 10;
+                step = 70;
             const typeValue = calcType.options[calcType.selectedIndex].value,
                 squareValue = +calcSquare.value;
 
@@ -332,7 +332,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             if (totalValue.textContent !== total) {
                 if (totalValue.textContent > total) {
-                    step = -1;
+                    step = -50;
                 }
 
                 const timer = setInterval(() => {
@@ -345,7 +345,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        calcBlock.addEventListener('change', e => {
+        calcBlock.addEventListener('input', e => {
             const target = e.target;
 
             if (target.matches('select') ||
