@@ -321,7 +321,7 @@ window.addEventListener('DOMContentLoaded', () => {
             let total = 0,
                 countValue = 1,
                 dayValue = 10,
-                step = 10;
+                step = 70;
             const typeValue = calcType.options[calcType.selectedIndex].value,
                 squareValue = +calcSquare.value;
 
@@ -343,7 +343,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             if (totalValue.textContent !== total) {
                 if (totalValue.textContent > total) {
-                    step = -1;
+                    step = -50;
                 }
 
                 const timer = setInterval(() => {
@@ -356,7 +356,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        calcBlock.addEventListener('change', e => {
+        calcBlock.addEventListener('input', e => {
             const target = e.target;
 
             if (target.matches('select') ||
@@ -372,7 +372,6 @@ window.addEventListener('DOMContentLoaded', () => {
                 if (e.target.matches('.calc-square') ||
                 e.target.matches('.calc-count') ||
                 e.target.matches('.calc-day')) {
-
                     e.target.value = e.target.value.replace(/\D/g, '');
                 }
             });
@@ -388,43 +387,6 @@ window.addEventListener('DOMContentLoaded', () => {
             loadMessage = 'Загрузка...',
             successMessage = 'Спасибо! Мы скоро с Вами свяжемся!';
 
-        // Получение формы из html
-        const form = document.getElementById('form1');
-
-        // Элемент который добавляется на страницу
-        const statusMessage = document.createElement('div');
-        statusMessage.style.cssText = 'font-size: 2rem;';
-
-        // Обработчик события submit для form
-        form.addEventListener('submit', e =>  {
-
-            e.preventDefault();
-            // Добавили пустой элемент!
-            form.appendChild(statusMessage);
-            statusMessage.textContent = loadMessage;
-
-            // Объект formData, который считывает все данные
-            // с form с обязательным атрибутом name=''
-            const formData = new FormData(form);
-            const body = {};
-
-            // for (let val of formData.entries()) {
-            //     body[val[0]] = val[1];
-            // }
-
-            formData.forEach((val, key) => {
-                body[key] = val;
-            });
-            postData(body,
-                () => {
-                    statusMessage.textContent = successMessage;
-                },
-                error => {
-                    statusMessage.textContent = errorMessage;
-                    console.error(error);
-                }
-            );
-        });
         const postData = (body, outputData, errorData) => {
             // Создали объект request
             const request = new XMLHttpRequest();
@@ -455,8 +417,80 @@ window.addEventListener('DOMContentLoaded', () => {
             // Для этого все данные с помощью цикла (for of либо forEach) получаем
             // с обьекта farmData записываем в переменную body, и перед отправкой переводим все в json
         };
-    };
 
+        // Выбор формы по тегу button
+        const clearInput = idForm => {
+            const form = document.getElementById(idForm);
+            [...form.elements].filter(item => item.tagName.toLowerCase() !== 'button' &&
+                    item.type !== 'button')
+                .forEach(item => item.value = '');
+        };
+
+        // Validator
+        const isValid = e => {
+
+            const target = e.target;
+
+            if (target.matches('.form-phone')) {
+                target.value = target.value.replace(/[^+\d]/g, '');
+            }
+            if (target.name === 'user_name') {
+                target.value = target.value.replace(/[^а-яё ]/gi, '');
+            }
+            if (target.matches('.mess')) {
+                target.value = target.value.replace(/[^а-яё ,.]/gi, '');
+            }
+
+        };
+
+        const processForm = idForm => {
+            // Получение формы из html
+            const form = document.getElementById(idForm);
+
+            // Элемент который добавляется на страницу
+            const statusMessage = document.createElement('div');
+            statusMessage.style.cssText = 'font-size: 2rem;';
+
+            // Обработчик события submit для form
+            form.addEventListener('submit', e =>  {
+
+                e.preventDefault();
+                // Добавили пустой элемент!
+                form.appendChild(statusMessage);
+                statusMessage.textContent = loadMessage;
+
+                // Объект formData, который считывает все данные
+                // с form с обязательным атрибутом name=''
+                const formData = new FormData(form);
+                const body = {};
+
+                // for (let val of formData.entries()) {
+                //     body[val[0]] = val[1];
+                // }
+
+                formData.forEach((val, key) => {
+                    body[key] = val;
+                });
+                postData(body,
+                    () => {
+                        statusMessage.textContent = successMessage;
+                        clearInput(idForm);
+                    },
+                    error => {
+                        statusMessage.textContent = errorMessage;
+                        console.error(error);
+                    }
+                );
+            });
+
+            form.addEventListener('input', isValid);
+        };
+
+        processForm('form1');
+        processForm('form2');
+        processForm('form3');
+
+    };
 
     countTimer('09 november 2020');
     toggleMenu();
