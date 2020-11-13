@@ -1,3 +1,14 @@
+/*Сделать ДЗ:
+~~~~~1) Написать скрипт для отправки данных по видео~~~~~
+2) Обязательно посмотреть дополнительное видео после практики
+3) Подключить скрипт отправки данных к:
+    · Модальному окну
+    · Контактной форме в самом низу страницы
+4) После отправки инпуты должны очищаться
+5) Сделать валидацию данных при вводе: в поля с номером телефона можно ввести только цифры и знак “+”
+6) Запретить ввод любых символов в поле "Ваше имя" и "Ваше сообщение", кроме Кириллицы и пробелов!
+*/
+
 /* eslint-disable no-use-before-define */
 window.addEventListener('DOMContentLoaded', () => {
     // eslint-disable-next-line strict
@@ -370,6 +381,83 @@ window.addEventListener('DOMContentLoaded', () => {
 
     };
 
+    // Send AJAX Form
+    const sendForm = () => {
+        // Сообщения для пользователя
+        const errorMessage = 'Что-то пошло не так...',
+            loadMessage = 'Загрузка...',
+            successMessage = 'Спасибо! Мы скоро с Вами свяжемся!';
+
+        // Получение формы из html
+        const form = document.getElementById('form1');
+
+        // Элемент который добавляется на страницу
+        const statusMessage = document.createElement('div');
+        statusMessage.style.cssText = 'font-size: 2rem;';
+
+        // Обработчик события submit для form
+        form.addEventListener('submit', e =>  {
+
+            e.preventDefault();
+            // Добавили пустой элемент!
+            form.appendChild(statusMessage);
+            statusMessage.textContent = loadMessage;
+
+            // Объект formData, который считывает все данные
+            // с form с обязательным атрибутом name=''
+            const formData = new FormData(form);
+            const body = {};
+
+            // for (let val of formData.entries()) {
+            //     body[val[0]] = val[1];
+            // }
+
+            formData.forEach((val, key) => {
+                body[key] = val;
+            });
+            postData(body,
+                () => {
+                    statusMessage.textContent = successMessage;
+                },
+                error => {
+                    statusMessage.textContent = errorMessage;
+                    console.error(error);
+                }
+            );
+        });
+        const postData = (body, outputData, errorData) => {
+            // Создали объект request
+            const request = new XMLHttpRequest();
+            // Прослушка события readystatechange для request
+            request.addEventListener('readystatechange', () => {
+
+                if (request.readyState !== 4) {
+                    return;
+                }
+
+                if (request.readyState === 200) {
+                    outputData();
+                } else {
+                    errorData(request.status);
+                }
+            });
+
+            // Настройка запроса, метод POST к файлу php
+            request.open('POST', './server.php');
+            // Добавление заголовков, сейчас json, но могут быть и formData!
+            request.setRequestHeader('Content-Type', 'application/json');
+
+            // Отправка formData с помощью метода request
+            // request.send(formData);
+
+            // либо, если требует сервер перегнать его в json формат
+            request.send(JSON.stringify(body));
+            // Для этого все данные с помощью цикла (for of либо forEach) получаем
+            // с обьекта farmData записываем в переменную body, и перед отправкой переводим все в json
+        };
+    };
+
+
     countTimer('09 november 2020');
     toggleMenu();
     togglePopUp();
@@ -377,6 +465,7 @@ window.addEventListener('DOMContentLoaded', () => {
     addDot();
     setCommandImg();
     calc(100);
+    sendForm();
     slider();
 
 });
