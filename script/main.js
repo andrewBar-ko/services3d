@@ -1,7 +1,3 @@
-
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// Сделать анимацию чем больше цифр введино тем больше скорость анимации
-
 /* eslint-disable no-use-before-define */
 window.addEventListener('DOMContentLoaded', () => {
     // eslint-disable-next-line strict
@@ -40,7 +36,6 @@ window.addEventListener('DOMContentLoaded', () => {
             trueClock(timer.hours, timerHours);
             trueClock(timer.minutes, timerMinutes);
             trueClock(timer.seconds, timerSeconds);
-
 
             if (timer.timeRemaining <= 0) {
                 clearInterval(this.timeInterval);
@@ -316,7 +311,6 @@ window.addEventListener('DOMContentLoaded', () => {
                 dayValue = 10;
             const typeValue = calcType.options[calcType.selectedIndex].value,
                 squareValue = +calcSquare.value;
-
 
             if (calcCount.value > 1) {
                 countValue += (calcCount.value - 1) / 10;
