@@ -1,12 +1,18 @@
+// eslint-disable-next-line no-unused-vars
 class Validator {
     constructor({ selector, pattern = {}, method }) {
         this.form = document.querySelector(selector);
         this.pattern = pattern;
         this.method = method;
-        this.elementsForm = [...this.form.elements].filter(item =>
-            item.tagName.toLowerCase() !== 'button' &&
-            item.type !== 'button');
+
         this.error = new Set();
+    }
+    // Выбор формы по тегу button
+    clearInput(idForm) {
+        const form = document.getElementById(idForm);
+        [...form.elements].filter(item => item.tagName.toLowerCase() !== 'button' &&
+                item.type !== 'button')
+            .forEach(item => item.value = '');
     }
 
     init() {
@@ -112,12 +118,20 @@ class Validator {
 
     setPattern() {
 
+        if (!this.pattern.name) {
+            this.pattern.name = /^[?!,.а-яА-ЯёЁ\s]/;
+        }
+
         if (!this.pattern.phone) {
             this.pattern.phone = /^\+?[78]([-()]*\d){10}$/;
         }
 
         if (!this.pattern.email) {
             this.pattern.email = /^\w+"\w+\.\w{2,}$/;
+        }
+
+        if (!this.pattern.messange) {
+            this.pattern.messange = /^[?!,.а-яА-ЯёЁ0-9\s]+$ /;
         }
 
     }
