@@ -52,25 +52,35 @@ window.addEventListener('DOMContentLoaded', () => {
     // Меню
     const toggleMenu = () => {
 
+        const menu = document.querySelector('menu');
+
+        // Открытие/закрытие меню с помощью добавления класса
         const handlerMenu = () => {
-
-            const target = event.target;
-
-            const displayMenu = () => {
-                document.querySelector('menu').classList.toggle('active-menu');
-            };
-
-            if (target.closest('.menu') ||
-				(!target.closest('menu') &&
-					document.querySelector('menu').classList.contains('active-menu'))) {
-                displayMenu();
-            }
-            if (target.closest('menu') && target.closest('[href^="#"]')) {
-                displayMenu();
-            }
+            menu.classList.toggle('active-menu');
         };
 
-        document.body.addEventListener('click', handlerMenu);
+        document.body.addEventListener('click', e => {
+
+            e.preventDefault();
+            const target = e.target;
+
+            if (target.closest('.menu')) {
+                handlerMenu();
+            } else if (target.closest('menu')) {
+
+                if (target.classList.contains('close-btn')) {
+                    handlerMenu();
+
+                } else if (!target.classList.contains('active-menu')) {
+                    handlerMenu();
+                }
+
+            } else if (menu.classList.contains('active-menu') && target.closest('body')) {
+                handlerMenu();
+            }
+
+        });
+
     };
 
     // Модальное окно
@@ -121,22 +131,22 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     // // Скролл при click на href = '#';
-    // const smoothLinks = document.querySelectorAll('a[href^="#"]');
+    const smoothLinks = document.querySelectorAll('menu ul>li a, a[href="#service-block"]');
 
-    // for (const smoothLink of smoothLinks) {
+    for (const smoothLink of smoothLinks) {
 
-    //     smoothLink.addEventListener('click', e => {
+        smoothLink.addEventListener('click', e => {
 
-    //         e.preventDefault();
+            e.preventDefault();
 
-    //         const id = smoothLink.getAttribute('href');
-    //         document.querySelector(id).scrollIntoView({
-    //             behavior: 'smooth',
-    //             block: 'start'
-    //         });
+            const id = smoothLink.getAttribute('href');
+            document.querySelector(id).scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
 
-    //     });
-    // }
+        });
+    }
 
     // Tabs
     const tabs = () => {
