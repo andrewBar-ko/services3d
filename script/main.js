@@ -320,8 +320,8 @@ window.addEventListener('DOMContentLoaded', () => {
         const countSum = () => {
             let total = 0,
                 countValue = 1,
-                dayValue = 10,
-                step = 10;
+                dayValue = 10;
+
             const typeValue = calcType.options[calcType.selectedIndex].value,
                 squareValue = +calcSquare.value;
 
@@ -341,19 +341,25 @@ window.addEventListener('DOMContentLoaded', () => {
                 total = price * typeValue * squareValue * countValue * dayValue;
             }
 
-            if (totalValue.textContent !== total) {
-                if (totalValue.textContent > total) {
-                    step = -1;
-                }
+            const animeTotal = (elem, value) => {
+                let push = value / 100;
 
-                const timer = setInterval(() => {
-                    totalValue.textContent = +totalValue.textContent + step;
-                    if ((total - totalValue.textContent) * step < 1) {
-                        clearInterval(timer);
-                        totalValue.textContent = Math.round(total);
+                const interval = setInterval(() => {
+
+                    if (+elem.textContent >= value) {
+                        elem.textContent = value;
+                        clearInterval(interval);
+                    } else {
+                        elem.textContent = Math.round(+elem.textContent + push);
+                        push += elem.textContent / 100;
                     }
-                }, 0);
-            }
+
+                }, 10);
+
+                return Math.round(elem.textContent);
+            };
+
+            totalValue.textContent = animeTotal(totalValue, total);
         };
 
         calcBlock.addEventListener('change', e => {
@@ -395,7 +401,6 @@ window.addEventListener('DOMContentLoaded', () => {
         const statusMessage = document.createElement('div');
         statusMessage.style.cssText = 'font-size: 2rem;';
 
-        // Обработчик события submit для form
         form.addEventListener('submit', e =>  {
 
             e.preventDefault();
@@ -407,10 +412,6 @@ window.addEventListener('DOMContentLoaded', () => {
             // с form с обязательным атрибутом name=''
             const formData = new FormData(form);
             const body = {};
-
-            // for (let val of formData.entries()) {
-            //     body[val[0]] = val[1];
-            // }
 
             formData.forEach((val, key) => {
                 body[key] = val;
@@ -428,7 +429,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const postData = (body, outputData, errorData) => {
             // Создали объект request
             const request = new XMLHttpRequest();
-            // Прослушка события readystatechange для request
+
             request.addEventListener('readystatechange', () => {
 
                 if (request.readyState !== 4) {
@@ -444,19 +445,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
             // Настройка запроса, метод POST к файлу php
             request.open('POST', './server.php');
-            // Добавление заголовков, сейчас json, но могут быть и formData!
             request.setRequestHeader('Content-Type', 'application/json');
-
-            // Отправка formData с помощью метода request
-            // request.send(formData);
-
-            // либо, если требует сервер перегнать его в json формат
             request.send(JSON.stringify(body));
-            // Для этого все данные с помощью цикла (for of либо forEach) получаем
-            // с обьекта farmData записываем в переменную body, и перед отправкой переводим все в json
+
         };
     };
-
 
     countTimer('09 november 2020');
     toggleMenu();

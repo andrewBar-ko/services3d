@@ -414,31 +414,76 @@
 		</div>
 	</div>
 	<script>
-		const valid = new Validator({
-			selector: 'idForm',
+		const form1 = new Validator({ // Оставить заявку
+			selector: '#form1',
 			pattern: {
-				phone: /^\+380\d{7}$/,
-				zip: /\d{5,6}/
+				name: /^[А-Яа-я]+$/
 			},
 			method: {
-				'name': [
-					['notEmpty'],
-					['pattern', 'name']
-				],
-				'phone': [
+				'form1-phone': [
 					['notEmpty'],
 					['pattern', 'phone']
 				],
-				'email': [
+				'form1-email': [
 					['notEmpty'],
 					['pattern', 'email']
 				],
-				'messange': [
+				'form1-name': [
 					['notEmpty'],
-					['pattern', 'messange']
+					['pattern', 'name']
+				]
+			}
+		}),
+		form2 = new Validator({ // остались вопросы
+			selector: '#form2',
+			pattern: {
+				text: /^[А-Яа-я,.]+$/,
+				name: /^[А-Яа-я]+$/,
+				messange: /^[?!,.а-яА-ЯёЁ0-9\s]+$ /
+			},
+			method: {
+				'form2-phone': [
+					['notEmpty'],
+					['pattern', 'phone'],
+				],
+				'form2-email': [
+					['notEmpty'],
+					['pattern', 'email']
+				],
+				'form2-name': [
+					['notEmpty'],
+					['pattern', 'name']
+				],
+				'form2-message': [
+					['notEmpty'],
+					['pattern', 'text']
+				]
+			}
+		}),
+		form3 = new Validator({ // popup
+			selector: '#form3',
+			pattern: {
+				name: /^[А-Яа-я]+$/
+			},
+			method: {
+				'form3-phone': [
+					['notEmpty'],
+					['pattern', 'phone'],
+				],
+				'form3-email': [
+					['notEmpty'],
+					['pattern', 'email']
+				],
+				'form3-name': [
+					['notEmpty'],
+					['pattern', 'name']
 				]
 			}
 		});
+
+		form1.init();
+		form2.init();
+		form3.init();
 	</script>
 </body>
 </html>
