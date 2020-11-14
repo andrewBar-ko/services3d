@@ -121,22 +121,22 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     // // Скролл при click на href = '#';
-    // const smoothLinks = document.querySelectorAll('a[href^="#"]');
+    const smoothLinks = document.querySelectorAll('menu ul>li a, a[href="#service-block"]');
 
-    // for (const smoothLink of smoothLinks) {
+    for (const smoothLink of smoothLinks) {
 
-    //     smoothLink.addEventListener('click', e => {
+        smoothLink.addEventListener('click', e => {
 
-    //         e.preventDefault();
+            e.preventDefault();
 
-    //         const id = smoothLink.getAttribute('href');
-    //         document.querySelector(id).scrollIntoView({
-    //             behavior: 'smooth',
-    //             block: 'start'
-    //         });
+            const id = smoothLink.getAttribute('href');
+            document.querySelector(id).scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
 
-    //     });
-    // }
+        });
+    }
 
     // Tabs
     const tabs = () => {
