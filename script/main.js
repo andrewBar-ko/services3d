@@ -1,3 +1,7 @@
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// Сделать анимацию чем больше цифр введино тем больше скорость анимации
+
 /* eslint-disable no-use-before-define */
 window.addEventListener('DOMContentLoaded', () => {
     // eslint-disable-next-line strict
@@ -341,6 +345,7 @@ window.addEventListener('DOMContentLoaded', () => {
                         clearInterval(timer);
                         totalValue.textContent = Math.round(total);
                     }
+
                 }, 0);
             }
         };
