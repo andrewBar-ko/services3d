@@ -313,8 +313,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const countSum = () => {
             let total = 0,
                 countValue = 1,
-                dayValue = 10,
-                step = 10000;
+                dayValue = 10;
             const typeValue = calcType.options[calcType.selectedIndex].value,
                 squareValue = +calcSquare.value;
 
@@ -334,20 +333,26 @@ window.addEventListener('DOMContentLoaded', () => {
                 total = price * typeValue * squareValue * countValue * dayValue;
             }
 
-            if (totalValue.textContent !== total) {
-                if (totalValue.textContent > total) {
-                    step = -8000;
-                }
+            const animeTotal = (elem, value) => {
+                let push = value / 100;
 
-                const timer = setInterval(() => {
-                    totalValue.textContent = +totalValue.textContent + step;
-                    if ((total - totalValue.textContent) * step < 1) {
-                        clearInterval(timer);
-                        totalValue.textContent = Math.round(total);
+                const interval = setInterval(() => {
+
+                    if (+elem.textContent >= value) {
+                        elem.textContent = value;
+                        clearInterval(interval);
+                    } else {
+                        elem.textContent = Math.round(+elem.textContent + push);
+                        push += elem.textContent / 100;
                     }
 
-                }, 0);
-            }
+                }, 10);
+
+                return Math.round(elem.textContent);
+            };
+
+            totalValue.textContent = animeTotal(totalValue, total);
+
         };
 
         calcBlock.addEventListener('input', e => {
