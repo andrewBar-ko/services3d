@@ -437,9 +437,8 @@
 		form2 = new Validator({ // остались вопросы
 			selector: '#form2',
 			pattern: {
-				text: /^[А-Яа-я,.]+$/,
-				name: /^[А-Яа-я]+$/,
-				messange: /^[?!,.а-яА-ЯёЁ0-9\s]+$ /
+				text: /^[А-Яа-я,.?! ]+$/,
+				name: /^[А-Яа-я]+$/
 			},
 			method: {
 				'form2-phone': [

@@ -120,15 +120,15 @@ class Validator {
         }
 
         if (!this.pattern.phone) {
-            this.pattern.phone = /^\+?[378]([-()]*\d){10}$/;
+            this.pattern.phone = /^\+?[378]([-()]*\d){11}$/;
         }
 
         if (!this.pattern.email) {
-            this.pattern.email = /^\w+@\w+\.\w{2,}$/;
+            this.pattern.email = /^[\w]{1}[\w-.]*@[\w-]+\.[a-z]{2,4}$/;
         }
 
         if (!this.pattern.messange) {
-            this.pattern.messange = /^[?!,.а-яА-ЯёЁ0-9\s]+$ /;
+            this.pattern.messange = /^[А-ЯёЁа-я0-9\s][ -]+$/;
         }
 
     }

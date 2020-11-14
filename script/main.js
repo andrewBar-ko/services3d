@@ -129,6 +129,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         popupClose.addEventListener('click', () => {
             popup.style.display = 'none';
+            document.querySelector('#form3').value = '';
         });
     };
 
