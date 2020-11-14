@@ -1,14 +1,3 @@
-/*Сделать ДЗ:
-~~~~~1) Написать скрипт для отправки данных по видео~~~~~
-2) Обязательно посмотреть дополнительное видео после практики
-3) Подключить скрипт отправки данных к:
-    · Модальному окну
-    · Контактной форме в самом низу страницы
-4) После отправки инпуты должны очищаться
-5) Сделать валидацию данных при вводе: в поля с номером телефона можно ввести только цифры и знак “+”
-6) Запретить ввод любых символов в поле "Ваше имя" и "Ваше сообщение", кроме Кириллицы и пробелов!
-*/
-
 /* eslint-disable no-use-before-define */
 window.addEventListener('DOMContentLoaded', () => {
     // eslint-disable-next-line strict
@@ -320,8 +309,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const countSum = () => {
             let total = 0,
                 countValue = 1,
-                dayValue = 10,
-                step = 70;
+                dayValue = 10;
             const typeValue = calcType.options[calcType.selectedIndex].value,
                 squareValue = +calcSquare.value;
 
@@ -341,19 +329,25 @@ window.addEventListener('DOMContentLoaded', () => {
                 total = price * typeValue * squareValue * countValue * dayValue;
             }
 
-            if (totalValue.textContent !== total) {
-                if (totalValue.textContent > total) {
-                    step = -50;
-                }
+            const animeTotal = (elem, value) => {
+                let push = value / 100;
 
-                const timer = setInterval(() => {
-                    totalValue.textContent = +totalValue.textContent + step;
-                    if ((total - totalValue.textContent) * step < 1) {
-                        clearInterval(timer);
-                        totalValue.textContent = Math.round(total);
+                const interval = setInterval(() => {
+
+                    if (+elem.textContent >= value) {
+                        elem.textContent = value;
+                        clearInterval(interval);
+                    } else {
+                        elem.textContent = Math.round(+elem.textContent + push);
+                        push += elem.textContent / 100;
                     }
-                }, 0);
-            }
+
+                }, 10);
+
+                return Math.round(elem.textContent);
+            };
+
+            totalValue.textContent = animeTotal(totalValue, total);
         };
 
         calcBlock.addEventListener('input', e => {
@@ -409,9 +403,6 @@ window.addEventListener('DOMContentLoaded', () => {
             // Добавление заголовков, сейчас json, но могут быть и formData!
             request.setRequestHeader('Content-Type', 'application/json');
 
-            // Отправка formData с помощью метода request
-            // request.send(formData);
-
             // либо, если требует сервер перегнать его в json формат
             request.send(JSON.stringify(body));
             // Для этого все данные с помощью цикла (for of либо forEach) получаем
@@ -463,10 +454,6 @@ window.addEventListener('DOMContentLoaded', () => {
                 // с form с обязательным атрибутом name=''
                 const formData = new FormData(form);
                 const body = {};
-
-                // for (let val of formData.entries()) {
-                //     body[val[0]] = val[1];
-                // }
 
                 formData.forEach((val, key) => {
                     body[key] = val;
