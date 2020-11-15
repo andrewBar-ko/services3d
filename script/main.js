@@ -110,6 +110,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 popup.style.display = 'block';
                 if (window.innerWidth > 768) {
                     popupData.count = popupData.startPos;
+                    document.body.style.overflowY = 'hidden';
                     requestAnimationFrame(showPopup);
                 }
             });
@@ -117,6 +118,7 @@ window.addEventListener('DOMContentLoaded', () => {
         });
 
         popupClose.addEventListener('click', () => {
+            document.body.style.overflowY = '';
             popup.style.display = 'none';
         });
     };
@@ -382,9 +384,9 @@ window.addEventListener('DOMContentLoaded', () => {
             successMessage = 'Спасибо! Мы скоро с Вами свяжемся!';
 
         const postData = (body, outputData, errorData) => {
-            // Создали объект request
+
             const request = new XMLHttpRequest();
-            // Прослушка события readystatechange для request
+
             request.addEventListener('readystatechange', () => {
 
                 if (request.readyState !== 4) {
@@ -400,13 +402,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
             // Настройка запроса, метод POST к файлу php
             request.open('POST', './server.php');
-            // Добавление заголовков, сейчас json, но могут быть и formData!
             request.setRequestHeader('Content-Type', 'application/json');
-
-            // либо, если требует сервер перегнать его в json формат
             request.send(JSON.stringify(body));
-            // Для этого все данные с помощью цикла (for of либо forEach) получаем
-            // с обьекта farmData записываем в переменную body, и перед отправкой переводим все в json
+
         };
 
         // Выбор формы по тегу button
@@ -440,20 +438,19 @@ window.addEventListener('DOMContentLoaded', () => {
 
             // Элемент который добавляется на страницу
             const statusMessage = document.createElement('div');
-            statusMessage.style.cssText = 'font-size: 2rem;';
+            statusMessage.style.cssText = 'font-size: 2rem; color: #fff';
 
-            // Обработчик события submit для form
-            form.addEventListener('submit', e =>  {
-
-                e.preventDefault();
-                // Добавили пустой элемент!
-                form.appendChild(statusMessage);
-                statusMessage.textContent = loadMessage;
+            const readFormData = e => {
 
                 // Объект formData, который считывает все данные
                 // с form с обязательным атрибутом name=''
                 const formData = new FormData(form);
                 const body = {};
+
+                e.preventDefault();
+
+                form.appendChild(statusMessage);
+                statusMessage.textContent = loadMessage;
 
                 formData.forEach((val, key) => {
                     body[key] = val;
@@ -468,8 +465,10 @@ window.addEventListener('DOMContentLoaded', () => {
                         console.error(error);
                     }
                 );
-            });
+            };
 
+            // Обработчик события submit для form
+            form.addEventListener('submit', readFormData);
             form.addEventListener('input', isValid);
         };
 
