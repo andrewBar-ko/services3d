@@ -393,7 +393,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                if (request.readyState === 200) {
+                if (request.readyState !== 200) {
                     outputData();
                 } else {
                     errorData(request.status);
@@ -455,6 +455,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 formData.forEach((val, key) => {
                     body[key] = val;
                 });
+
                 postData(body,
                     () => {
                         statusMessage.textContent = successMessage;
