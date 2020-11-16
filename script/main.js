@@ -415,7 +415,9 @@ window.addEventListener('DOMContentLoaded', () => {
         };
         //для каждой формы
         document.querySelectorAll("form").forEach(form => {
-            form.addEventListener("submit", e => {
+
+            const processForm = e => {
+
                 e.preventDefault();
                 form.appendChild(statusMessage);
                 statusMessage.textContent = loadMessage;
@@ -428,6 +430,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     body,
                     () => {
                         statusMessage.textContent = successMessage;
+                        form.querySelectorAll("input").forEach(item => item.value = "");
                     },
                     error => {
                         statusMessage.textContent = errorMessage;
@@ -435,7 +438,9 @@ window.addEventListener('DOMContentLoaded', () => {
                     }
                 );
 
-            });
+            };
+
+            form.addEventListener("submit", processForm);
             form.addEventListener('input', isValid);
         });
 
