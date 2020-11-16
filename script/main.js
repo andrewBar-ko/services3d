@@ -49,6 +49,18 @@ window.addEventListener('DOMContentLoaded', () => {
 
     };
 
+    // Preloader
+    const preoladerForm = () => {
+        const preloader = document.querySelector('#page-preloader'),
+            spinner = document.querySelector('.cssload-box-loading');
+
+        setTimeout(() => {
+            preloader.style.display = 'none';
+            spinner.style.display = 'none';
+        }, 500);
+
+    };
+
     // Меню
     const toggleMenu = () => {
 
@@ -462,5 +474,6 @@ window.addEventListener('DOMContentLoaded', () => {
     calc(100);
     sendForm();
     slider();
+    preoladerForm();
 
 });
