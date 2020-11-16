@@ -378,10 +378,54 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Send AJAX Form
     const sendForm = () => {
-        // Сообщения для пользователя
-        const errorMessage = 'Что-то пошло не так...',
-            loadMessage = 'Загрузка...',
-            successMessage = 'Спасибо! Мы скоро с Вами свяжемся!';
+        const errorMessage = "Что-то пошло нет...",
+            loadMessage = "Загрузка...",
+            successMessage = "Спасибо!Мы с вами свяжемся! ";
+
+        const statusMessage = document.createElement("div");
+        statusMessage.style.cssText = "font-size: 2rem; color: white";
+
+        // Validator
+        const isValid = e => {
+
+            const target = e.target;
+
+            if (target.matches('.form-phone')) {
+                target.value = target.value.replace(/[^+\d]/g, '');
+            }
+            if (target.name === 'user_name') {
+                target.value = target.value.replace(/[^а-яё ]/gi, '');
+            }
+            if (target.matches('.mess')) {
+                target.value = target.value.replace(/[^а-яё ,.]/gi, '');
+            }
+
+        };
+        //для каждой формы
+        document.querySelectorAll("form").forEach(form => {
+            form.addEventListener("submit", e => {
+                e.preventDefault();
+                form.appendChild(statusMessage);
+                statusMessage.textContent = loadMessage;
+                const formData = new FormData(form);
+                const body = {};
+                formData.forEach((val, key) => {
+                    body[key] = val;
+                });
+                postData(
+                    body,
+                    () => {
+                        statusMessage.textContent = successMessage;
+                    },
+                    error => {
+                        statusMessage.textContent = errorMessage;
+                        console.error(error);
+                    }
+                );
+
+            });
+            form.addEventListener('input', isValid);
+        });
 
         const postData = (body, outputData, errorData) => {
 
@@ -406,76 +450,6 @@ window.addEventListener('DOMContentLoaded', () => {
             request.send(JSON.stringify(body));
 
         };
-
-        // Выбор формы по тегу button
-        const clearInput = idForm => {
-            const form = document.getElementById(idForm);
-            [...form.elements].filter(item => item.tagName.toLowerCase() !== 'button' &&
-                    item.type !== 'button')
-                .forEach(item => item.value = '');
-        };
-
-        // Validator
-        const isValid = e => {
-
-            const target = e.target;
-
-            if (target.matches('.form-phone')) {
-                target.value = target.value.replace(/[^+\d]/g, '');
-            }
-            if (target.name === 'user_name') {
-                target.value = target.value.replace(/[^а-яё ]/gi, '');
-            }
-            if (target.matches('.mess')) {
-                target.value = target.value.replace(/[^а-яё ,.]/gi, '');
-            }
-
-        };
-
-        const processForm = idForm => {
-            // Получение формы из html
-            const form = document.getElementById(idForm);
-
-            // Элемент который добавляется на страницу
-            const statusMessage = document.createElement('div');
-            statusMessage.style.cssText = 'font-size: 2rem; color: #fff';
-
-            const readFormData = e => {
-
-                // Объект formData, который считывает все данные
-                // с form с обязательным атрибутом name=''
-                const formData = new FormData(form);
-                const body = {};
-
-                e.preventDefault();
-
-                form.appendChild(statusMessage);
-                statusMessage.textContent = loadMessage;
-
-                formData.forEach((val, key) => {
-                    body[key] = val;
-                });
-
-                postData(body,
-                    () => {
-                        statusMessage.textContent = successMessage;
-                        clearInput(idForm);
-                    },
-                    error => {
-                        statusMessage.textContent = errorMessage;
-                        console.error(error);
-                    }
-                );
-            };
-
-            // Обработчик события submit для form
-            form.addEventListener('submit', readFormData);
-            form.addEventListener('input', isValid);
-        };
-
-        processForm('form1');
-        processForm('form2');
-        processForm('form3');
 
     };
 
