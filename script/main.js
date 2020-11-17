@@ -431,14 +431,13 @@ window.addEventListener('DOMContentLoaded', () => {
                     .then(() => {
                         statusMessage.textContent = successMessage;
                         form.querySelectorAll("input").forEach(item => item.value = "");
-                        const remStatus = () => statusMessage.remove();
-                        setInterval(remStatus, 2500);
+                        // const remStatus = () => statusMessage.textContent = '';
+                        // setInterval(remStatus, 2500);
                     })
                     .catch(error => {
                         statusMessage.textContent = errorMessage;
                         console.error(error);
                     });
-
 
             };
 
