@@ -428,7 +428,10 @@ window.addEventListener('DOMContentLoaded', () => {
                 });
                 postData(body)
 
-                    .then(() => {
+                    .then(response => {
+                        if (response.status !== 200) {
+                            throw new Error('status network not 200!');
+                        }
                         statusMessage.textContent = successMessage;
                         form.querySelectorAll("input").forEach(item => item.value = "");
                         const remStatus = () => statusMessage.remove();
@@ -439,33 +442,20 @@ window.addEventListener('DOMContentLoaded', () => {
                         console.error(error);
                     });
 
-
             };
 
             form.addEventListener("submit", processForm);
             form.addEventListener('input', isValid);
         });
 
-        const postData = body => new Promise((resolve, reject) => {
-            const request = new XMLHttpRequest();
+        const postData = body => fetch('./server.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body),
+            credentials: 'include'
 
-            request.addEventListener('readystatechange', () => {
-
-                if (request.readyState !== 4) {
-                    return;
-                }
-
-                if (request.readyState !== 200) {
-                    resolve();
-                } else {
-                    reject(request.status);
-                }
-            });
-
-            // Настройка запроса, метод POST к файлу php
-            request.open('POST', './server.php');
-            request.setRequestHeader('Content-Type', 'application/json');
-            request.send(JSON.stringify(body));
         });
 
     };
