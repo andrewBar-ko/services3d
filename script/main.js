@@ -431,6 +431,8 @@ window.addEventListener('DOMContentLoaded', () => {
                     () => {
                         statusMessage.textContent = successMessage;
                         form.querySelectorAll("input").forEach(item => item.value = "");
+                        const remStatus = () => statusMessage.remove();
+                        setInterval(remStatus, 2500);
                     },
                     error => {
                         statusMessage.textContent = errorMessage;
