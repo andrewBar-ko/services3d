@@ -426,19 +426,19 @@ window.addEventListener('DOMContentLoaded', () => {
                 formData.forEach((val, key) => {
                     body[key] = val;
                 });
-                postData(
-                    body,
-                    () => {
+                postData(body)
+
+                    .then(() => {
                         statusMessage.textContent = successMessage;
                         form.querySelectorAll("input").forEach(item => item.value = "");
                         const remStatus = () => statusMessage.remove();
                         setInterval(remStatus, 2500);
-                    },
-                    error => {
+                    })
+                    .catch(error => {
                         statusMessage.textContent = errorMessage;
                         console.error(error);
-                    }
-                );
+                    });
+
 
             };
 
@@ -446,8 +446,7 @@ window.addEventListener('DOMContentLoaded', () => {
             form.addEventListener('input', isValid);
         });
 
-        const postData = (body, outputData, errorData) => {
-
+        const postData = body => new Promise((resolve, reject) => {
             const request = new XMLHttpRequest();
 
             request.addEventListener('readystatechange', () => {
@@ -457,9 +456,9 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
 
                 if (request.readyState !== 200) {
-                    outputData();
+                    resolve();
                 } else {
-                    errorData(request.status);
+                    reject(request.status);
                 }
             });
 
@@ -467,8 +466,7 @@ window.addEventListener('DOMContentLoaded', () => {
             request.open('POST', './server.php');
             request.setRequestHeader('Content-Type', 'application/json');
             request.send(JSON.stringify(body));
-
-        };
+        });
 
     };
 
