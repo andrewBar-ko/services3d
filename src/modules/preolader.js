@@ -1,3 +1,5 @@
+'use strict';
+
 const preoladerForm = () => {
     const preloader = document.querySelector('#page-preloader'),
         spinner = document.querySelector('.cssload-box-loading');

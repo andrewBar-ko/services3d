@@ -1,4 +1,5 @@
 'use strict';
+
 const countTimer = deadline => {
     const timerHours = document.querySelector('#timer-hours'),
         timerMinutes = document.querySelector('#timer-minutes'),

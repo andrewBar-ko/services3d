@@ -1,3 +1,5 @@
+'use strict';
+
 const addDot = () => {
 
     const portfolioItem = document.querySelectorAll('.portfolio-item'),

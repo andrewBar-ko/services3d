@@ -1,3 +1,5 @@
+'use strict';
+
 const setCommandImg = () => {
 
     const commandRow = document.querySelector('#command .row');

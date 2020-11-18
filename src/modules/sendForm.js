@@ -1,3 +1,5 @@
+'use strict';
+
 const sendForm = () => {
     const errorMessage = "Что-то пошло нет...",
         loadMessage = "Загрузка...",
