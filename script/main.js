@@ -346,14 +346,18 @@ window.addEventListener('DOMContentLoaded', () => {
             const animeTotal = (elem, value) => {
                 let push = value / 100;
 
+                if (totalValue.textContent !== total) {
+                    if (totalValue.textContent > total) {
+                        push -= totalValue.textContent / 100; 
+                    }
+                }
+
                 const interval = setInterval(() => {
 
-                    if (+elem.textContent >= value) {
-                        elem.textContent = value;
+                    totalValue.textContent = Math.ceil(+totalValue.textContent + push);
+                    if ((total - totalValue.textContent) * push < 1) {
                         clearInterval(interval);
-                    } else {
-                        elem.textContent = Math.round(+elem.textContent + push);
-                        push += elem.textContent / 100;
+                        totalValue.textContent = Math.round(total);
                     }
 
                 }, 10);
