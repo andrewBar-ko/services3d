@@ -7,25 +7,24 @@ const sendForm = () => {
 
     const statusMessage = document.createElement("div");
     statusMessage.style.cssText = "font-size: 2rem; color: white";
+    
+    const getForms = form => {
+        // Validator
+        const isValid = e => {
 
-    // Validator
-    const isValid = e => {
+            const target = e.target;
 
-        const target = e.target;
+            if (target.matches('.form-phone')) {
+                target.value = target.value.replace(/[^+\d]/g, '');
+            }
+            if (target.name === 'user_name') {
+                target.value = target.value.replace(/[^а-яё ]/gi, '');
+            }
+            if (target.matches('.mess')) {
+                target.value = target.value.replace(/[^а-яё ,.]/gi, '');
+            }
 
-        if (target.matches('.form-phone')) {
-            target.value = target.value.replace(/[^+\d]/g, '');
-        }
-        if (target.name === 'user_name') {
-            target.value = target.value.replace(/[^а-яё ]/gi, '');
-        }
-        if (target.matches('.mess')) {
-            target.value = target.value.replace(/[^а-яё ,.]/gi, '');
-        }
-
-    };
-    //для каждой формы
-    document.querySelectorAll("form").forEach(form => {
+        };
 
         const processForm = e => {
 
@@ -39,7 +38,10 @@ const sendForm = () => {
             });
             postData(body)
 
-                .then(() => {
+                .then(response => {
+                    if (response.status !== 200) {
+                        throw new Error('status network not 200!');
+                    }
                     statusMessage.textContent = successMessage;
                     form.querySelectorAll("input").forEach(item => item.value = "");
                     const remStatus = () => statusMessage.textContent = '';
@@ -56,29 +58,20 @@ const sendForm = () => {
 
         form.addEventListener("submit", processForm);
         form.addEventListener('input', isValid);
-    });
 
-    const postData = body => new Promise((resolve, reject) => {
-        const request = new XMLHttpRequest();
+        const postData = body => fetch('./server.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body),
+            credentials: 'include'
 
-        request.addEventListener('readystatechange', () => {
-
-            if (request.readyState !== 4) {
-                return;
-            }
-
-            if (request.readyState !== 200) {
-                resolve();
-            } else {
-                reject(request.status);
-            }
         });
+    };
 
-        // Настройка запроса, метод POST к файлу php
-        request.open('POST', './server.php');
-        request.setRequestHeader('Content-Type', 'application/json');
-        request.send(JSON.stringify(body));
-    });
+    //для каждой формы
+    document.querySelectorAll("form").forEach(item => getForms(item));
 
 };
 
