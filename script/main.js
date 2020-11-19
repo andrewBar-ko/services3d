@@ -348,7 +348,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 if (totalValue.textContent !== total) {
                     if (totalValue.textContent > total) {
-                        push -= totalValue.textContent / 100; 
+                        push -= totalValue.textContent / 100;
                     }
                 }
 
@@ -401,24 +401,24 @@ window.addEventListener('DOMContentLoaded', () => {
         const statusMessage = document.createElement("div");
         statusMessage.style.cssText = "font-size: 2rem; color: white";
 
-        // Validator
-        const isValid = e => {
+        const getForms = form => {
 
-            const target = e.target;
+            // Validator
+            const isValid = e => {
 
-            if (target.matches('.form-phone')) {
-                target.value = target.value.replace(/[^+\d]/g, '');
-            }
-            if (target.name === 'user_name') {
-                target.value = target.value.replace(/[^а-яё ]/gi, '');
-            }
-            if (target.matches('.mess')) {
-                target.value = target.value.replace(/[^а-яё ,.]/gi, '');
-            }
+                const target = e.target;
 
-        };
-        //для каждой формы
-        document.querySelectorAll("form").forEach(form => {
+                if (target.matches('.form-phone')) {
+                    target.value = target.value.replace(/[^+\d]/g, '');
+                }
+                if (target.name === 'user_name') {
+                    target.value = target.value.replace(/[^а-яё ]/gi, '');
+                }
+                if (target.matches('.mess')) {
+                    target.value = target.value.replace(/[^а-яё ,.]/gi, '');
+                }
+
+            };
 
             const processForm = e => {
 
@@ -452,17 +452,20 @@ window.addEventListener('DOMContentLoaded', () => {
 
             form.addEventListener("submit", processForm);
             form.addEventListener('input', isValid);
-        });
 
-        const postData = body => fetch('./server.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body),
-            credentials: 'include'
+            const postData = body => fetch('./server.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body),
+                credentials: 'include'
 
-        });
+            });
+        };
+
+        //для каждой формы
+        document.querySelectorAll("form").forEach(item => getForms(item));
 
     };
 
