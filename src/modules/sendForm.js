@@ -1,3 +1,4 @@
+// eslint-disable-next-line strict
 'use strict';
 
 const sendForm = () => {
@@ -7,7 +8,7 @@ const sendForm = () => {
 
     const statusMessage = document.createElement("div");
     statusMessage.style.cssText = "font-size: 2rem; color: white";
-    
+
     const getForms = form => {
         // Validator
         const isValid = e => {
@@ -27,15 +28,16 @@ const sendForm = () => {
         };
 
         const processForm = e => {
-
+            const target = e.target;
             e.preventDefault();
             form.appendChild(statusMessage);
             statusMessage.textContent = loadMessage;
-            const formData = new FormData(form);
+            const formData = new FormData(target);
             const body = {};
             formData.forEach((val, key) => {
                 body[key] = val;
             });
+            // eslint-disable-next-line no-use-before-define
             postData(body)
 
                 .then(response => {
@@ -70,8 +72,7 @@ const sendForm = () => {
         });
     };
 
-    //для каждой формы
-    document.querySelectorAll("form").forEach(item => getForms(item));
+    document.addEventListener('submit', item => getForms(item));
 
 };
 
