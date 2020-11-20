@@ -53,13 +53,18 @@ const sendForm = () => {
             const target = e.target;
 
             if (target.matches('.form-phone')) {
-                target.value = target.value.replace(/[^+\d]/g, '');
+                target.value = target.value.replace(/^\+?[378]([-()]*\d){11}$/);
             }
+
+            if (target.matches('.form-email')) {
+                target.value = target.value.replace(/^[\w]{1}[\w-.]*@[\w-]+\.[a-z]{2,4}$/);
+            }
+
             if (target.name === 'user_name') {
                 target.value = target.value.replace(/[^а-яё ]/gi, '');
             }
             if (target.matches('.mess')) {
-                target.value = target.value.replace(/[^а-яё ,.]/gi, '');
+                target.value = target.value.replace(/[^а-яА-ЯёЁ,.!?\s]/, '');
             }
 
         };
