@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 
 // eslint-disable-next-line no-undef
-module.export = {
+module.exports = {
     entry: {
         main: './src/index.js'
     },
