@@ -6,7 +6,6 @@ const togglePopUp = () => {
         popupBtn = document.querySelectorAll('.popup-btn'),
         popupClose = document.querySelector('.popup-close'),
         popupContent = document.querySelector('.popup-content'),
-        inputForms = document.querySelectorAll('form input'),
         popupData = {
             count: -445,
             speed: 15,
@@ -47,7 +46,7 @@ const togglePopUp = () => {
     popupClose.addEventListener('click', () => {
         document.body.style.overflowY = '';
         popup.style.display = 'none';
-        inputForms.value = '';
+        document.getElementById("form3").reset();
     });
 };
 

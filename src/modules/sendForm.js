@@ -9,6 +9,16 @@ const sendForm = () => {
     const statusMessage = document.createElement("div");
     statusMessage.style.cssText = "font-size: 2rem; color: white";
 
+    const postData = body => fetch('./server.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body),
+        credentials: 'include'
+
+    });
+
     document.addEventListener('submit', e => {
 
         e.preventDefault();
@@ -47,48 +57,38 @@ const sendForm = () => {
             });
         };
 
-        // Validator
-        const isValid = e => {
+    });
 
-            const target = e.target;
-
-            if (target.matches('.form-phone')) {
-                target.value = target.value.replace(/^\+?[378]([-()]*\d){11}$/);
-            }
-
-            if (target.matches('.form-email')) {
-                target.value = target.value.replace(/^[\w]{1}[\w-.]*@[\w-]+\.[a-z]{2,4}$/);
-            }
-
-            if (target.name === 'user_name') {
-                target.value = target.value.replace(/[^а-яё ]/gi, '');
-            }
-            if (target.matches('.mess')) {
+    // Validator
+    const isValidate = () => {
+        document.addEventListener('input', event => {
+            const target = event.target;
+            if (target.matches('[name="user_name"]') ||
+            target.matches('[name="user_message"]')) {
                 target.value = target.value.replace(/[^а-яА-ЯёЁ,.!?\s]/, '');
+            } else if (target.matches('[name="user_phone"]')) {
+                target.value = target.value.replace(/[^\\+?[0-9]/i, '');
+                if (/^\+?[78][0-9]{10}$/.test(target.value) ||
+                /^\+?[378][0-9]{11}$/.test(target.value)) {
+                    target.style.cssText = 'border:2px solid green';
+                    target.setCustomValidity('');
+                } else if (target.value.length === 0) {
+                    target.style.border = '';
+                } else {
+                    target.setCustomValidity('Введите значение в формате +79273335544 или 89273335544');
+                    target.style.cssText = 'border:2px solid red;';
+                }
             }
-
-        };
-        const processForm = form => {
-
-            form.appendChild(statusMessage);
-            statusMessage.textContent = loadMessage;
-
-            // eslint-disable-next-line no-unused-vars
-            form.addEventListener("submit", processForm);
-            form.addEventListener('input', isValid);
-        };
-
-    });
-
-    const postData = body => fetch('./server.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body),
-        credentials: 'include'
-
-    });
+        });
+    };
+    isValidate();
+    const processForm = form => {
+        form.appendChild(statusMessage);
+        statusMessage.textContent = loadMessage;
+        // eslint-disable-next-line no-unused-vars
+        form.addEventListener("submit", processForm);
+        form.addEventListener('input', isValidate);
+    };
 
 };
 

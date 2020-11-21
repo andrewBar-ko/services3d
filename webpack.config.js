@@ -1,4 +1,5 @@
-import { resolve } from 'path';
+// eslint-disable-next-line no-undef
+const path = require('path');
 
 // eslint-disable-next-line no-undef
 module.exports = {
@@ -7,8 +8,8 @@ module.exports = {
     },
     output: {
         // eslint-disable-next-line no-undef
-        path: resolve(__dirname, './dist'),
-        filename: '[name].js',
+        path: path.resolve(__dirname, './dist'),
+        filename: 'main.js',
         publicPath: '/dist'
     }
 };
