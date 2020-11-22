@@ -24,11 +24,21 @@ const sendForm = () => {
         e.preventDefault();
         const target = e.target;
 
+        target.appendChild(statusMessage);
+        statusMessage.textContent = loadMessage;
+
         const formData = new FormData(target);
         const body = {};
         formData.forEach((val, key) => {
             body[key] = val;
         });
+
+        const clearInputsForms = target => {
+            const targetFormInputs = target.querySelectorAll('input');
+            targetFormInputs.forEach(item => {
+                item.value = '';
+            });
+        };
 
         // eslint-disable-next-line no-use-before-define
         postData(body)
@@ -49,13 +59,6 @@ const sendForm = () => {
                 statusMessage.textContent = errorMessage;
                 console.error(error);
             });
-
-        const clearInputsForms = target => {
-            const targetFormInputs = target.querySelectorAll('input');
-            targetFormInputs.forEach(item => {
-                item.value = '';
-            });
-        };
 
     });
 
@@ -82,14 +85,8 @@ const sendForm = () => {
         });
     };
     isValidate();
-    const processForm = form => {
-        form.appendChild(statusMessage);
-        statusMessage.textContent = loadMessage;
-        // eslint-disable-next-line no-unused-vars
-        form.addEventListener("submit", processForm);
-        form.addEventListener('input', isValidate);
-    };
 
+    document.body.addEventListener('input', isValidate);
 };
 
 export default sendForm;
