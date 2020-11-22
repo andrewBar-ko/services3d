@@ -64,6 +64,7 @@ const sendForm = () => {
 
     // Validator
     const isValidate = () => {
+
         document.addEventListener('input', event => {
             const target = event.target;
             if (target.matches('[name="user_name"]')) {
