@@ -422,8 +422,11 @@
 	
 	
 	<!-- Preloader: Finish -->
-	<!-- <div class="form-modal d-none" id="form-preload">
-		<div class='loader-center'>
+
+	<div class="form-modal d-none">
+		<div class="overlay"></div>
+	
+		<div class='loader-center d-none' id="form-preload">
 			<div class='chars'>
 				<span class='char brace'>{</span>
 				<span class='dots'>
@@ -433,11 +436,9 @@
 				</span>
 				<span class='char brace'>}</span>
 			</div>
-		</div>	
-		<div class="overlay"></div>
-	</div> -->
-	<!-- <div class="form-modal d-none" id="form-good">
-		<div class="form text-center">
+		</div>
+
+		<div class="form text-center d-none" id="form-good">
 			<h4>
 				Спасибо!
 			</h4>
@@ -448,18 +449,16 @@
 				OK
 			</button>
 		</div>
-		<div class="overlay"></div>
-	</div> -->
-	<!-- <div class="form-modal d-none" id="form-error">
-		<div class="form text-center">
+
+		<div class="form text-center d-none" id="form-error">
 			<h4 style="color: rgb(238, 20, 20); left: 43%">
 				Error!
 			</h4>
 			<p>
-				Что-то пошдо не так :(
+				Что-то пошло не так :( Пожалуйста, проверте сетевое соединение!
 			</p>
 		</div>
-		<div class="overlay"></div>
-	</div> -->
+		
+	</div>
 </body>
 </html>
